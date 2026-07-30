@@ -43,6 +43,49 @@
   <sub>Click the demo to open the full-quality video.</sub>
 </p>
 
+## One memory. Every front door.
+
+Capture a thought where it finds you. Recall it from the conversation you are
+already in. Open the full app when you want to browse the Mind Palace or develop
+the idea further.
+
+<table>
+  <tr>
+    <td align="center" width="14%">
+      <img src="./apps/chuck-app/source/src/assets/chuck-icon.webp" alt="Chuck web app" width="42" />
+      <br /><sub><strong>Web app</strong></sub>
+    </td>
+    <td align="center" width="14%">
+      <img src="./docs/surfaces/telegram.svg" alt="Telegram" width="38" />
+      <br /><sub><strong>Telegram</strong></sub>
+    </td>
+    <td align="center" width="14%">
+      <img src="./docs/surfaces/whatsapp.svg" alt="WhatsApp" width="38" />
+      <br /><sub><strong>WhatsApp</strong></sub>
+    </td>
+    <td align="center" width="14%">
+      <img src="./docs/surfaces/slack.svg" alt="Slack" width="38" />
+      <br /><sub><strong>Slack</strong></sub>
+    </td>
+    <td align="center" width="14%">
+      <img src="./docs/surfaces/microsoft-teams.svg" alt="Microsoft Teams" width="38" />
+      <br /><sub><strong>Teams</strong></sub>
+    </td>
+    <td align="center" width="14%">
+      <img src="./docs/surfaces/gmail.svg" alt="Gmail" width="38" />
+      <br /><sub><strong>Gmail</strong></sub>
+    </td>
+    <td align="center" width="14%">
+      <img src="./docs/surfaces/outlook.svg" alt="Microsoft Outlook" width="38" />
+      <br /><sub><strong>Outlook</strong></sub>
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <sub>The web app ships with Chuck. Messaging and email surfaces are connected per deployment.</sub>
+</p>
+
 ## Save first. Sort later.
 
 Most note apps ask you to organise a thought before you have finished having it:
