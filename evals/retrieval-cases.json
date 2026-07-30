@@ -1,0 +1,20 @@
+[
+  {
+    "id": "repo-tts",
+    "query": "Which GitHub repo did I save about TTS?",
+    "acceptance": "Returns the saved repository URL and cites the exact repo note.",
+    "requires_url": true
+  },
+  {
+    "id": "person-okr",
+    "query": "What was the OKR I had in mind for Maya?",
+    "acceptance": "Finds the short table-only thought and cites its note ID, even without a Markdown file.",
+    "required_source": "table"
+  },
+  {
+    "id": "video-transition",
+    "query": "Show me that video transition design inspiration.",
+    "acceptance": "Finds the video or link note, preserves its source URL, and cites the supporting note.",
+    "requires_url": true
+  }
+]

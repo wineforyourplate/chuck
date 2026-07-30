@@ -1,0 +1,4 @@
+{
+  "description": "Long-form content for notes — one file per developed/long note (/notes/<note-id>.md). Auto-indexed, so this is Chuck's RAG source and the canvas the develop skill grows.",
+  "visibility": "POD"
+}

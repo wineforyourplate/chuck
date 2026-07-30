@@ -1,0 +1,12 @@
+{
+  "name": "chuck-app",
+  "title": "Chuck",
+  "template": "lemma-vite",
+  "podId": "chuck",
+  "stylePreset": "editorial",
+  "runtime": {
+    "apiUrl": "https://api.<your-lemma-host>",
+    "authUrl": "https://<your-lemma-host>/auth",
+    "appBasePath": "/"
+  }
+}

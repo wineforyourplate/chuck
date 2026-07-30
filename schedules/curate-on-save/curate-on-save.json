@@ -1,0 +1,14 @@
+{
+  "name": "curate-on-save",
+  "schedule_type": "DATASTORE",
+  // INSERT only — the guard that prevents a trigger loop. The curator UPDATEs the same
+  // row (status raw→curating→filed); firing only on INSERT means those updates can't
+  // re-trigger it. Never add UPDATE here.
+  "config": {
+    "table_name": "notes",
+    "operations": ["INSERT"]
+  },
+  "agent_name": "curator",
+  "is_active": true,
+  "visibility": "PERSONAL"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "preferences",
+  "primary_key_column": "id",
+  // RLS on — one row per member (their own settings). The app creates a row on first visit.
+  "enable_rls": true,
+  "columns": [
+    // Legacy voice field retained so existing installations do not lose a column.
+    // New development work uses developer_style below.
+    { "name": "default_voice", "type": "TEXT", "default": "paul_graham", "max_length": 80 },
+    // Optional style used by the separate Developer Agent. "my_writing" reads only
+    // references the user explicitly attached for development.
+    { "name": "developer_style", "type": "TEXT", "default": "none", "max_length": 80 },
+    // How Chuck talks in chat. "spice" = dry & cheeky (default); "plain" = tone the cheek down.
+    { "name": "chat_tone", "type": "ENUM", "default": "spice", "options": ["spice", "plain"] },
+    // How many tags the curator adds per note.
+    { "name": "tag_density", "type": "ENUM", "default": "normal", "options": ["minimal", "normal"] },
+    // How confident the curator must be before filing a note into a collection (vs. Unsorted).
+    { "name": "autofile_confidence", "type": "ENUM", "default": "balanced", "options": ["cautious", "balanced", "eager"] }
+  ],
+  "config": {}
+}

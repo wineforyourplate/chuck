@@ -1,0 +1,32 @@
+{
+  "name": "curator",
+  "description": "Background enrichment worker. Woken by the curate-on-save schedule on every new note: reads the raw capture, fetches the link via fetch_url, infers title/tags/thread/kind, writes long-form content to /notes for RAG, and files the note. Never chats.",
+  "instruction": { "$file": "instruction.md" },
+  "toolsets": ["POD"],
+  "visibility": "POD",
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "note_id": { "type": "string", "description": "the note that was curated" },
+      "status":  { "type": "string", "enum": ["filed", "failed"] },
+      "title":   { "type": "string" },
+      "kind":    { "type": "string" },
+      "tags":    { "type": "array", "items": { "type": "string" } }
+    },
+    "required": ["note_id", "status"]
+  },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "notes",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "collections",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "preferences",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "folder", "resource_name": "/notes",
+      "permission_ids": ["folder.read", "folder.write"] },
+    { "resource_type": "folder", "resource_name": "/playbook",
+      "permission_ids": ["folder.read"] },
+    { "resource_type": "function", "resource_name": "fetch_url",
+      "permission_ids": ["function.read", "function.execute"] }
+  ]}
+}

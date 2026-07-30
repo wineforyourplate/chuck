@@ -1,0 +1,28 @@
+# Local Lemma/Vite context
+.env.local
+.env.*.local
+
+# Dependencies and generated output
+node_modules/
+dist/
+dist.zip
+*.tsbuildinfo
+__pycache__/
+*.py[cod]
+
+# Editor and OS files
+.DS_Store
+.claude/
+.playwright-cli/
+.idea/
+.vscode/
+*.log
+
+# Local Lemma state
+.lemma/
+
+# Private/demo data must stay outside this repository
+seed/
+private/
+scratchpad/
+*.tmp

@@ -1,0 +1,19 @@
+{
+  "name": "chuck",
+  "description": "Chuck — the capture and recall assistant for the thought catalog. It saves what you give it, answers from what you have kept, and leaves every deliberate transformation to the separate Developer Agent.",
+  "instruction": { "$file": "instruction.md" },
+  "toolsets": ["POD", "USER_INTERACTION"],
+  "visibility": "POD",
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "notes",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "collections",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "preferences",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "folder", "resource_name": "/notes",
+      "permission_ids": ["folder.read"] },
+    { "resource_type": "folder", "resource_name": "/playbook",
+      "permission_ids": ["folder.read"] },
+  ]}
+}

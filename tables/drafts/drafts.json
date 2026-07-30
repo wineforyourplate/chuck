@@ -1,0 +1,25 @@
+{
+  "name": "drafts",
+  "primary_key_column": "id",
+  // Development is personal. Each member sees only the drafts they deliberately create.
+  "enable_rls": true,
+  "visibility": "POD",
+  "columns": [
+    { "name": "source_note_id", "type": "UUID",
+      "foreign_key": { "references": "notes.id" } },
+    { "name": "source_text", "type": "TEXT", "max_length": 20000 },
+    { "name": "title", "type": "TEXT", "required": true, "max_length": 300 },
+    { "name": "output_type", "type": "ENUM", "required": true,
+      "options": ["essay", "plan", "script", "explainer", "custom"] },
+    { "name": "template", "type": "TEXT", "max_length": 80 },
+    { "name": "style", "type": "TEXT", "required": true, "default": "none", "max_length": 80 },
+    { "name": "instruction", "type": "TEXT" },
+    { "name": "reference_paths", "type": "JSON" },
+    { "name": "status", "type": "ENUM", "required": true, "default": "drafting",
+      "options": ["drafting", "ready", "failed"] },
+    { "name": "content_path", "type": "FILE_PATH", "max_length": 700 },
+    { "name": "excerpt", "type": "TEXT", "max_length": 1000 },
+    { "name": "revision", "type": "INTEGER", "required": true, "default": 0 }
+  ],
+  "config": {}
+}

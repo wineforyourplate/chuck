@@ -1,0 +1,4 @@
+{
+  "description": "Writing styles for developing a note into a document. One file per voice (voice_<slug>.md). Add a voice by adding and bootstrapping a file.",
+  "visibility": "POD"
+}

@@ -1,0 +1,58 @@
+{
+  "name": "notes",
+  "primary_key_column": "id",
+  // RLS ON (default): a personal thought catalog — each member sees only their own board.
+  // Each member gets a PERSONAL curate-on-save schedule when they first open the app.
+  // Lemma routes that RLS event only to the schedule owned by the note owner.
+  "enable_rls": true,
+  "columns": [
+    // Where it came in. Default `chat`; the Telegram surface sets `telegram`; a pasted link → `url`.
+    { "name": "source", "type": "ENUM", "required": true, "default": "chat",
+      "options": ["chat", "telegram", "url", "slack"] },
+
+    // The link, if any. Null for plain thoughts. The curator reads this to decide whether to fetch.
+    { "name": "source_url", "type": "TEXT", "max_length": 2000 },
+
+    // OpenGraph/video/repo image returned by fetch_url. Optional; link cards have a site fallback.
+    { "name": "preview_image_url", "type": "TEXT", "max_length": 2000 },
+
+    // The user's own aside attached to a URL; kept separate when the curator replaces body with a gist.
+    { "name": "user_note", "type": "TEXT", "max_length": 1000 },
+
+    // What it is — set by the curator after it looks. Default `thought`.
+    { "name": "kind", "type": "ENUM", "required": true, "default": "thought",
+      "options": ["thought", "article", "tweet", "repo", "video", "other"] },
+
+    // Inferred by the curator (a plain thought keeps its first line until then).
+    { "name": "title", "type": "TEXT", "max_length": 300 },
+
+    // The note itself — the raw thought as typed, or the extracted gist for a link.
+    // Long-form / developed content lives in the `content_path` file (this stays a readable summary).
+    { "name": "body", "type": "TEXT" },
+
+    // Array of strings, inferred by the curator, user-editable. (Lemma has no array type → JSON.)
+    { "name": "tags", "type": "JSON" },
+
+    // Optional free-text grouping. Superseded by collection_id (below) — kept for back-compat.
+    { "name": "thread", "type": "TEXT", "max_length": 160 },
+
+    // The collection this note is filed under (a user-created collections row). Null = Unsorted.
+    // Set by the curator (classify into an existing collection or leave null) or by the user.
+    { "name": "collection_id", "type": "UUID", "foreign_key": { "references": "collections.id" } },
+
+    // Enrichment lifecycle — the spine of the async design and the schedule guard.
+    // Chuck writes `raw`; the curator flips it `curating` → `filed` (or `failed`).
+    { "name": "status", "type": "ENUM", "required": true, "default": "raw",
+      "options": ["raw", "curating", "filed", "failed"] },
+
+    // Legacy/searchable long-form path. New Developer Agent documents live separately in `drafts`.
+    { "name": "content_path", "type": "FILE_PATH", "max_length": 500 },
+
+    // Legacy writing-style slug retained for existing developed notes. New work uses `drafts.style`.
+    { "name": "voice", "type": "TEXT", "max_length": 80 },
+
+    // Legacy original text retained so previously developed notes can be restored.
+    { "name": "original_body", "type": "TEXT" }
+  ],
+  "config": {}
+}

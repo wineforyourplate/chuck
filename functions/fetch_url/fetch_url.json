@@ -1,0 +1,8 @@
+{
+  "name": "fetch_url",
+  "description": "Read a public URL and return clean content: tweet text (FxTwitter), repo README (GitHub), video title (oEmbed), or dependency-free HTML text extraction. Blocks private networks and unsafe redirects. Returns ok=False + error on failure.",
+  "type": "API",
+  "code": { "$file": "code.py" }
+  // No permissions.grants: fetch_url touches no pod tables/files/connectors — it only makes
+  // outbound HTTP. That means an agent exposing it as a tool has nothing to mirror.
+}

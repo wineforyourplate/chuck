@@ -1,0 +1,17 @@
+{
+  "name": "collections",
+  "primary_key_column": "id",
+  // RLS on — each member owns their own collections (like their notes).
+  "enable_rls": true,
+  "columns": [
+    { "name": "name", "type": "TEXT", "required": true, "max_length": 80 },
+    // A short emoji shown in the sidebar (e.g. "📣").
+    { "name": "emoji", "type": "TEXT", "max_length": 16 },
+    // The one-line "what goes in here" rule. THIS is what the curator classifies a note
+    // against — collections are human-created; the agent only files into them by this rule.
+    { "name": "rule", "type": "TEXT", "max_length": 400 },
+    // Optional manual ordering in the sidebar.
+    { "name": "sort_order", "type": "INTEGER", "default": 0 }
+  ],
+  "config": {}
+}

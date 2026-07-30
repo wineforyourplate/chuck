@@ -1,0 +1,4 @@
+{
+  "description": "Chuck's playbook — capability procedures (save/route, answer, develop, curate, voice) loaded on demand so the base prompt stays thin. Markdown, one file per skill. (Named /playbook because /skills is a reserved system folder.)",
+  "visibility": "POD"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "developer",
+  "description": "A deliberate transformation agent for saved or raw thoughts, essays, plans, scripts, explainers, custom documents, and revisions. It can read source notes but can only write separate drafts.",
+  "instruction": { "$file": "instruction.md" },
+  "toolsets": ["POD"],
+  "visibility": "POD",
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "notes",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "drafts",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "preferences",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "folder", "resource_name": "/voices",
+      "permission_ids": ["folder.read"] }
+  ] }
+}
