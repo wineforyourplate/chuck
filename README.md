@@ -1,6 +1,10 @@
 <p align="center">
-  <img src="./apps/chuck-app/source/src/assets/chuck-icon.webp" alt="Chuck" width="72" />
+  <a href="https://lemma.work/import/github/wineforyourplate/chuck">
+    <img src="./docs/install-remix-on-lemma.svg" alt="Install and Remix Chuck on Lemma" height="50" />
+  </a>
 </p>
+
+
 
 <h1 align="center">Chuck</h1>
 
@@ -14,9 +18,7 @@
 </p>
 
 <p align="center">
-  <a href="https://lemma.work/import/github/wineforyourplate/chuck">
-    <img src="./docs/install-remix-on-lemma.svg" alt="Install and Remix Chuck on Lemma" height="50" />
-  </a>
+  <img src="./apps/chuck-app/source/src/assets/chuck-icon.webp" alt="Chuck" width="72" />
 </p>
 
 <p align="center">
