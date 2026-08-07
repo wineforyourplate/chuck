@@ -6,9 +6,7 @@
   </a>
 </p>
 
-<p align="center">
-  <sub>Click the demo to open the full-quality video.</sub>
-</p>
+
 
 
 <h1 align="center">Chuck</h1>
