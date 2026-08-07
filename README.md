@@ -1,9 +1,14 @@
+
+
 <p align="center">
-  <a href="https://lemma.work/import/github/wineforyourplate/chuck">
-    <img src="./docs/install-remix-on-lemma.svg" alt="Install and Remix Chuck on Lemma" height="50" />
+  <a href="./docs/chuck-repo-video.mp4">
+    <img src="./docs/chuck-repo-video.webp" alt="Chuck product demo — capture, curate, recall, and develop a thought" width="100%" />
   </a>
 </p>
 
+<p align="center">
+  <sub>Click the demo to open the full-quality video.</sub>
+</p>
 
 
 <h1 align="center">Chuck</h1>
@@ -16,6 +21,13 @@
   Throw Chuck a thought, link, repo, or half-formed idea.<br />
   It lands now, organises itself in the background, and comes back when you ask.
 </p>
+
+<p align="center">
+  <a href="https://lemma.work/import/github/wineforyourplate/chuck">
+    <img src="./docs/install-remix-on-lemma.svg" alt="Install and Remix Chuck on Lemma" height="50" />
+  </a>
+</p>
+
 
 <p align="center">
   <img src="./apps/chuck-app/source/src/assets/chuck-icon.webp" alt="Chuck" width="72" />
@@ -35,15 +47,6 @@
 
 ## See Chuck in action
 
-<p align="center">
-  <a href="./docs/chuck-repo-video.mp4">
-    <img src="./docs/chuck-repo-video.webp" alt="Chuck product demo — capture, curate, recall, and develop a thought" width="100%" />
-  </a>
-</p>
-
-<p align="center">
-  <sub>Click the demo to open the full-quality video.</sub>
-</p>
 
 ## One memory. Every front door.
 
