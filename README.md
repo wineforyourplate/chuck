@@ -134,20 +134,19 @@ Chuck separates capture from organisation.
       Tune tone, tags, filing confidence, styles, references, and collection rules.
     </td>
   </tr>
-  <tr>
-    <td width="50%">
-      <img src="./docs/screenshots/05-forgetful-times.jpg" alt="Forgetful Times weekly edition" />
-      <br /><strong>Forgetful Times, every Sunday</strong><br />
-      A real front page rendered from that week's notes — hero, rail, sections,
-      opinion — with headlines that are real hyperlinks, not a screenshot of one.
-    </td>
-    <td width="50%" valign="top">
-      <br /><strong>Read it in the app, too</strong><br />
-      The Editorial tab lists every past edition and renders the one you pick —
-      the newspaper keeps its own typography inside the app's own UI.
-    </td>
-  </tr>
 </table>
+
+<p align="center">
+  <a href="./docs/forgetful-times.mp4">
+    <img src="./docs/forgetful-times-poster.webp" alt="Forgetful Times — the weekly edition" width="320" />
+  </a>
+</p>
+
+<p align="center">
+  <sub><strong>Forgetful Times, every Sunday.</strong> A real front page rendered from that
+  week's notes — headlines are real hyperlinks, not a screenshot of one. The Editorial tab
+  keeps every past edition one tap away. Click to watch.</sub>
+</p>
 
 ## Private before clever
 
