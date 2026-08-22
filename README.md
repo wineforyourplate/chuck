@@ -1,6 +1,13 @@
+
+
 <p align="center">
-  <img src="./apps/chuck-app/source/src/assets/chuck-icon.webp" alt="Chuck" width="72" />
+  <a href="./docs/chuck-repo-video.mp4">
+    <img src="./docs/chuck-repo-video.webp" alt="Chuck product demo — capture, curate, recall, and develop a thought" width="100%" />
+  </a>
 </p>
+
+
+
 
 <h1 align="center">Chuck</h1>
 
@@ -20,6 +27,11 @@
   </a>
 </p>
 
+
+<p align="center">
+  <img src="./apps/chuck-app/source/src/assets/chuck-icon.webp" alt="Chuck" width="72" />
+</p>
+
 <p align="center">
   <a href="https://chuck.apps.asur.work">Live app</a>
   ·
@@ -34,15 +46,6 @@
 
 ## See Chuck in action
 
-<p align="center">
-  <a href="./docs/chuck-repo-video.mp4">
-    <img src="./docs/chuck-repo-video.webp" alt="Chuck product demo — capture, curate, recall, and develop a thought" width="100%" />
-  </a>
-</p>
-
-<p align="center">
-  <sub>Click the demo to open the full-quality video.</sub>
-</p>
 
 ## One memory. Every front door.
 
