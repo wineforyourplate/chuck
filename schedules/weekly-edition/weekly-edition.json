@@ -1,0 +1,15 @@
+{
+  "name": "weekly-edition",
+  "schedule_type": "TIME",
+  // The recipe's other schedule kind. curate-on-save (DATASTORE) reacts to what
+  // you save, the moment you save it. This one runs on a clock — Sunday 08:00,
+  // pod timezone — regardless of how much or little landed that week; the editor
+  // and render_edition decide what a thin week looks like (brief §4b bulletin).
+  "config": { "cron": "0 8 * * 0" },
+  "agent_name": "editor",
+  // Imported inactive on purpose — flip true only after a manual editor run has
+  // been verified end to end (brief DoD #4). The next Sunday fire is close enough
+  // to "now" that shipping this active-by-default would be careless.
+  "is_active": false,
+  "visibility": "PERSONAL"
+}

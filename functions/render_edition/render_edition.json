@@ -1,0 +1,10 @@
+{
+  "name": "render_edition",
+  "description": "Deterministic HTML renderer for the weekly Forgetful Times edition. Takes the editor agent's JSON payload (never HTML — see brief N3), validates it, picks or downgrades the layout (lede / no-photo / bulletin), HTML-escapes every string, and writes /editions/<year>-W<week>.html from the fixed template. No LLM involved.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "folder", "resource_name": "/templates", "permission_ids": ["folder.read"] },
+    { "resource_type": "folder", "resource_name": "/editions",  "permission_ids": ["folder.read", "folder.write"] }
+  ]}
+}

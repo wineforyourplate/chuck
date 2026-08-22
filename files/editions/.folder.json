@@ -1,0 +1,4 @@
+{
+  "description": "Rendered weekly editions of Forgetful Times, one file per ISO week (/editions/<year>-W<week>.html), written by render_edition and served as the link Chuck sends on Telegram. Folder-level permissions, not row-level RLS — every pod member with folder access sees every edition (fine for a single-owner catalog; see README's multi-user note, which already applies to the curate-on-save schedule's run-as user).",
+  "visibility": "POD"
+}

@@ -1,0 +1,4 @@
+{
+  "description": "Fixed HTML templates. render_edition loads forgetful-times.html, extracts its CSS verbatim, and fills structural slots in Python — no agent ever writes HTML here (see brief N3). Edit the CSS to restyle the paper; edit render_edition.py to change what fills a slot.",
+  "visibility": "POD"
+}

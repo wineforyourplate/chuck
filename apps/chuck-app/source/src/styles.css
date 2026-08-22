@@ -1601,3 +1601,71 @@ textarea:focus-visible, select:focus-visible { outline: 3px solid rgba(181, 71, 
 @media (hover: none), (pointer: coarse) {
   .card-menu-btn { opacity: 1; }
 }
+
+/* Editorial (Forgetful Times) — list + iframe preview of a rendered edition.
+   The iframe keeps its own newspaper styling; that contrast with the app's
+   UI is intentional, not something to harmonise away. */
+.editorial-main { flex-direction: row; overflow: hidden; }
+
+.editorial-list {
+  flex: 0 0 300px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--line);
+  background: var(--surface);
+}
+.editorial-list-head {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--line);
+  font-family: "Iowan Old Style", Georgia, serif;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.editorial-list-scroll { flex: 1 1 auto; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 4px; }
+.editorial-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 11px 12px;
+  background: none;
+  cursor: pointer;
+}
+.editorial-item:hover { background: var(--surface-soft); }
+.editorial-item.active { background: var(--accent-soft); border-color: var(--accent); }
+.editorial-item-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.editorial-item-title { font-size: 13.5px; font-weight: 650; color: var(--ink); line-height: 1.3; }
+.editorial-item.active .editorial-item-title { color: var(--accent-ink); }
+.editorial-item-meta { font-size: 11px; color: var(--faint); }
+.editorial-status {
+  flex: 0 0 auto;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.editorial-status--drafting { background: var(--raw-bg); color: var(--raw-ink); }
+.editorial-status--ready    { background: var(--curating-bg); color: var(--curating-ink); }
+.editorial-status--sent     { background: var(--filed-bg); color: var(--filed-ink); }
+.editorial-status--failed   { background: var(--failed-bg); color: var(--failed-ink); }
+
+.editorial-preview { flex: 1 1 auto; min-width: 0; display: flex; background: var(--surface-soft); }
+.editorial-frame { flex: 1 1 auto; width: 100%; height: 100%; border: 0; }
+.editorial-frame-status { margin: auto; color: var(--faint); font-family: Inter, sans-serif; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+.editorial-frame-status--error { color: var(--failed-ink); }
+
+.editorial-empty { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.editorial-empty p { margin: 0; }
+
+@media (max-width: 760px) {
+  .editorial-main { flex-direction: column; }
+  .editorial-list { flex: 0 0 auto; max-height: 38vh; border-right: 0; border-bottom: 1px solid var(--line); }
+  .editorial-preview { flex: 1 1 auto; min-height: 0; }
+}

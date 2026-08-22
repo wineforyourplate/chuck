@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Forgetful Times — {{MASTHEAD_DATE}}</title>
+  <!--
+    Forgetful Times — the weekly edition template.
+
+    This is a FIXED asset (see brief N3): render_edition.py loads it, extracts the
+    <style> block verbatim (so CSS changes here take effect automatically), and
+    builds the body in Python using the exact class names below. The body content
+    in this file is a worked EXAMPLE of every slot for reference — it is not itself
+    parsed at render time.
+
+    Block → slots (do not add new block types; the renderer only knows these):
+      masthead   — date line, edition line                 (header, always present)
+      lede       — image, kicker, title, dek, byline, href  (hero; "no-photo" variant
+                   below drops the image and enlarges the title)
+      rail-item  — mark, title, href                        (1-2 pulled highlights)
+      card       — title, dek, byline, href, image?         (a normal link story)
+      thought    — mark, title, dek?, byline                (a plain thought, no href)
+      opinion    — kicker, text, byline                     (one closing thought)
+      section    — id, name, items[]                        (a collection)
+      folio      — volume, count, date                      (footer)
+      bulletin-item — title, dek, byline, href?              (thin-week flat list;
+                   used only in the bulletin layout instead of rail + sections)
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #111;
+      --muted: #5a5a5a;
+      --rule: #111;
+      --paper: #fbfaf6;
+      --desk: #c9c1b3;
+      --kicker: #111;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      background: var(--desk);
+      color: var(--ink);
+      font-family: "Libre Baskerville", "Times New Roman", serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover .story-title,
+    a:hover .lede-title { text-decoration: underline; text-underline-offset: 3px; }
+
+    .edition {
+      width: min(390px, 100%);
+      margin: 0 auto;
+      background: var(--paper);
+      min-height: 100dvh;
+      position: relative;
+    }
+    .edition::before {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+    @media (min-width: 500px) {
+      body { padding: 36px 0 72px; }
+      .edition {
+        box-shadow:
+          0 0 0 1px #1a1a1a,
+          0 28px 70px rgba(40, 28, 12, 0.28);
+      }
+    }
+
+    .pad { padding: 0 16px; }
+    .hairline { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+    .hairline-double {
+      border: 0;
+      height: 5px;
+      margin: 0;
+      background:
+        linear-gradient(var(--rule), var(--rule)) 0 0 / 100% 1px no-repeat,
+        linear-gradient(var(--rule), var(--rule)) 0 100% / 100% 1px no-repeat;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 22px 1fr auto;
+      align-items: center;
+      padding: 10px 16px 8px;
+      font-family: Oswald, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .menu {
+      font-size: 16px;
+      letter-spacing: 0;
+      line-height: 1;
+      font-family: sans-serif;
+      font-weight: 700;
+    }
+    .date { text-align: center; }
+    .subscribe {
+      border: 1px solid var(--ink);
+      padding: 3px 7px 2px;
+      letter-spacing: 0.12em;
+      font-size: 9px;
+    }
+
+    .tools {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 16px 2px;
+    }
+    .search {
+      width: 14px;
+      height: 14px;
+      border: 1.4px solid var(--ink);
+      border-radius: 50%;
+      position: relative;
+    }
+    .search::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 1.4px;
+      background: var(--ink);
+      right: -4px;
+      bottom: -1px;
+      transform: rotate(40deg);
+    }
+    .social { display: flex; gap: 8px; }
+    .social i {
+      display: block;
+      width: 13px;
+      height: 13px;
+      border: 1.4px solid var(--ink);
+      border-radius: 50%;
+    }
+
+    .masthead {
+      text-align: center;
+      padding: 6px 10px 4px;
+    }
+    .masthead h1 {
+      margin: 0;
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-weight: 900;
+      font-size: 51px;
+      letter-spacing: -0.04em;
+      line-height: 0.84;
+      text-transform: uppercase;
+    }
+    .tagline {
+      margin: 10px 16px 11px;
+      text-align: center;
+      font-family: Oswald, sans-serif;
+      font-size: 8.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0 10px;
+      padding: 8px 12px 9px;
+      font-family: Oswald, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    nav a { color: var(--ink); }
+    nav a + a::before {
+      content: "·";
+      margin-right: 10px;
+      opacity: 0.55;
+    }
+
+    .lede { padding: 14px 16px 4px; }
+    .lede-frame {
+      overflow: hidden;
+      height: 248px;
+    }
+    .lede-photo {
+      display: block;
+      width: 100%;
+      height: 248px;
+      object-fit: cover;
+      object-position: 82% 18%;
+      transform: scale(2.45);
+      transform-origin: 100% 30%;
+      background: #222;
+    }
+    .kicker {
+      margin: 11px 0 5px;
+      font-family: Oswald, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .lede-title {
+      margin: 0 0 8px;
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 30px;
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+    }
+    .dek {
+      margin: 0;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: #222;
+    }
+    .byline {
+      margin: 10px 0 6px;
+      font-family: Oswald, sans-serif;
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .rail { padding: 10px 16px 6px; display: grid; gap: 14px; }
+    .rail-item {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+    .rail-item .thumb {
+      width: 92px;
+      height: 92px;
+      overflow: hidden;
+      background: #ddd;
+    }
+    .rail-item img {
+      width: 92px;
+      height: 130px;
+      object-fit: cover;
+      object-position: 50% 8%;
+      display: block;
+    }
+    .rail-mark {
+      width: 92px;
+      height: 92px;
+      background: #111;
+      color: var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Oswald, sans-serif;
+      font-style: normal;
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .rail-item h3 {
+      margin: 0 0 4px;
+      font-family: "Playfair Display", serif;
+      font-size: 15px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .rail-item p {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #333;
+    }
+
+    .section { padding: 18px 16px 8px; }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 12px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-family: Oswald, sans-serif;
+      font-weight: 700;
+      font-size: 34px;
+      letter-spacing: 0.02em;
+      line-height: 0.9;
+      text-transform: uppercase;
+    }
+    .view-all {
+      font-family: Oswald, sans-serif;
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--muted);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 12px;
+    }
+    .card img {
+      width: 100%;
+      height: 108px;
+      object-fit: cover;
+      object-position: 100% 38%;
+      background: #e7e4dc;
+      display: block;
+    }
+    .card h3 {
+      margin: 7px 0 5px;
+      font-family: "Playfair Display", serif;
+      font-size: 14.5px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .card p {
+      margin: 0;
+      font-size: 10.5px;
+      line-height: 1.4;
+      color: #333;
+    }
+    .meta {
+      margin: 7px 0 0;
+      font-family: Oswald, sans-serif;
+      font-size: 8.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .thought {
+      padding-top: 2px;
+    }
+    .thought .mark {
+      display: flex;
+      align-items: flex-end;
+      height: 86px;
+      background: #111;
+      color: var(--paper);
+      padding: 8px 9px 7px;
+      font-family: "Playfair Display", serif;
+      font-size: 26px;
+      line-height: 0.85;
+      font-style: italic;
+      overflow: hidden;
+    }
+    .thought.alt .mark { background: #2a2a2a; }
+    .thought.cream .mark {
+      background: #ece7da;
+      color: #111;
+      border-bottom: 1px solid #111;
+    }
+
+    .opinion {
+      margin-top: 10px;
+      background: #0d0d0d;
+      color: #f4f1ea;
+      padding: 22px 16px 26px;
+    }
+    .opinion .kicker { color: #f4f1ea; opacity: 0.72; }
+    .opinion h2 {
+      margin: 0 0 10px;
+      font-family: "Playfair Display", serif;
+      font-weight: 900;
+      font-size: 34px;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+    }
+    .opinion p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #ddd8cc;
+    }
+    .opinion .byline { color: #b9b3a6; }
+
+    .folio {
+      text-align: center;
+      padding: 14px 16px 22px;
+      font-family: Oswald, sans-serif;
+      font-size: 8.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* --- Added for render_edition's layout variants (§4b). Additive only —
+       nothing above this line changed from the mockup. --- */
+
+    /* no-photo: typographic hero. No .lede-frame/.lede-photo emitted; the title
+       grows and a rule appears above the kicker (reuses .hairline, no new class). */
+    .lede.no-photo .lede-title { font-size: 40px; }
+    .lede.no-photo .kicker { margin-top: 14px; }
+
+    /* bulletin: masthead + hero + one flat list + folio. No rail, no sections. */
+    .bulletin-list { padding: 4px 16px 8px; display: grid; gap: 16px; }
+    .bulletin-item h3 {
+      margin: 0 0 4px;
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .bulletin-item p {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #333;
+    }
+    .bulletin-item .meta {
+      margin: 6px 0 0;
+    }
+    .bulletin-item + .bulletin-item {
+      padding-top: 16px;
+      border-top: 1px solid var(--rule);
+    }
+  </style>
+</head>
+<body>
+  <article class="edition">
+    <header>
+      <div class="topbar">
+        <div class="menu" aria-hidden="true">☰</div>
+        <div class="date">{{MASTHEAD_DATE}}</div>
+        <div class="subscribe">{{MASTHEAD_EDITION}}</div>
+      </div>
+      <div class="tools">
+        <div class="search" aria-hidden="true"></div>
+        <div class="social" aria-hidden="true"><i></i><i></i><i></i></div>
+      </div>
+      <div class="masthead">
+        <h1>Forgetful<br />Times</h1>
+      </div>
+      <p class="tagline">Things you meant to remember · est. 2026</p>
+      <hr class="hairline-double" />
+      <nav>
+        <!-- one <a> per section present this edition, plus Opinion if present -->
+        {{NAV_LINKS}}
+      </nav>
+      <hr class="hairline" />
+    </header>
+
+    <!-- LEDE — layout "lede": photo hero -->
+    <section class="lede">
+      <a href="{{HERO_HREF}}">
+        <div class="lede-frame">
+          <img class="lede-photo" src="{{HERO_IMAGE}}" alt="{{HERO_TITLE}}" />
+        </div>
+        <p class="kicker">{{HERO_KICKER}}</p>
+        <h2 class="lede-title">{{HERO_TITLE}}</h2>
+        <p class="dek">{{HERO_DEK}}</p>
+        <p class="byline">{{HERO_BYLINE}}</p>
+      </a>
+    </section>
+
+    <!-- LEDE — layout "no-photo": same slots, no image, larger title -->
+    <!--
+    <section class="lede no-photo">
+      <hr class="hairline" />
+      <a href="{{HERO_HREF}}">
+        <p class="kicker">{{HERO_KICKER}}</p>
+        <h2 class="lede-title">{{HERO_TITLE}}</h2>
+        <p class="dek">{{HERO_DEK}}</p>
+        <p class="byline">{{HERO_BYLINE}}</p>
+      </a>
+    </section>
+    -->
+
+    <hr class="hairline pad" style="margin: 8px 16px 0;" />
+
+    <!-- RAIL — 1-2 items, omitted entirely (with its rule) when empty -->
+    <section class="rail">
+      <a class="rail-item" href="{{RAIL_HREF}}">
+        <div class="rail-mark">{{RAIL_MARK}}</div>
+        <div>
+          <h3>{{RAIL_TITLE}}</h3>
+        </div>
+      </a>
+    </section>
+
+    <!-- SECTION — one per collection with items this week, Unsorted last -->
+    <section class="section" id="{{SECTION_ID}}">
+      <hr class="hairline" style="margin: 0 0 14px;" />
+      <div class="section-head">
+        <h2>{{SECTION_NAME}}</h2>
+        <span class="view-all">Filed »</span>
+      </div>
+      <div class="grid-2">
+        <!-- CARD — a linked story -->
+        <a class="card" href="{{CARD_HREF}}">
+          <img src="{{CARD_IMAGE}}" alt="{{CARD_TITLE}}" />
+          <h3>{{CARD_TITLE}}</h3>
+          <p>{{CARD_DEK}}</p>
+          <p class="meta">{{CARD_BYLINE}}</p>
+        </a>
+        <!-- THOUGHT — a plain thought, no href -->
+        <article class="card thought">
+          <div class="mark">{{THOUGHT_MARK}}</div>
+          <h3>{{THOUGHT_TITLE}}</h3>
+          <p>{{THOUGHT_DEK}}</p>
+          <p class="meta">{{THOUGHT_BYLINE}}</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- OPINION — one closing thought, omitted entirely when none -->
+    <section class="opinion" id="opinion">
+      <p class="kicker">Opinion</p>
+      <h2>{{OPINION_TEXT}}</h2>
+      <p class="byline">{{OPINION_BYLINE}}</p>
+    </section>
+
+    <!-- BULLETIN — layout "bulletin" only: replaces rail + sections + opinion
+         with one flat list. Masthead and (optional) lede stay as above. -->
+    <!--
+    <div class="bulletin-list">
+      <div class="bulletin-item">
+        <h3>{{ITEM_TITLE}}</h3>
+        <p>{{ITEM_DEK}}</p>
+        <p class="meta">{{ITEM_BYLINE}}</p>
+      </div>
+    </div>
+    -->
+
+    <p class="folio">Forgetful Times · Vol. {{FOLIO_VOLUME}} · {{FOLIO_COUNT}} filed · {{FOLIO_DATE}}</p>
+  </article>
+</body>
+</html>

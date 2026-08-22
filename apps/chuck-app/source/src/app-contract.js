@@ -1,4 +1,4 @@
-export const APP_ROUTES = ['board', 'chat', 'develop', 'profile']
+export const APP_ROUTES = ['board', 'chat', 'develop', 'editorial', 'profile']
 export const CITATION_PROTOCOL = '[[CHUCK_APP_CITATIONS_V1]]'
 export const CURATION_SCHEDULE_PREFIX = 'curate-on-save'
 

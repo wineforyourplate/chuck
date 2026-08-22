@@ -19,6 +19,15 @@
     // The user's own aside attached to a URL; kept separate when the curator replaces body with a gist.
     { "name": "user_note", "type": "TEXT", "max_length": 1000 },
 
+    // WHY it was saved, in one line. Becomes the dek in the weekly edition.
+    // Kept raw and honest — the editor polishes it at press time, this stays true.
+    { "name": "why", "type": "TEXT", "max_length": 500 },
+
+    // Provenance of the reason. `stated` = the user's own words; `inferred` = the curator's
+    // guess. Nothing may present an inferred reason as the user's.
+    { "name": "why_source", "type": "ENUM", "required": true, "default": "none",
+      "options": ["stated", "inferred", "none"] },
+
     // What it is — set by the curator after it looks. Default `thought`.
     { "name": "kind", "type": "ENUM", "required": true, "default": "thought",
       "options": ["thought", "article", "tweet", "repo", "video", "other"] },
@@ -39,6 +48,10 @@
     // The collection this note is filed under (a user-created collections row). Null = Unsorted.
     // Set by the curator (classify into an existing collection or leave null) or by the user.
     { "name": "collection_id", "type": "UUID", "foreign_key": { "references": "collections.id" } },
+
+    // The edition this note appeared in. Stops an item running two weeks running —
+    // the editor selects where edition_id is null, then stamps every included row.
+    { "name": "edition_id", "type": "UUID", "foreign_key": { "references": "editions.id" } },
 
     // Enrichment lifecycle — the spine of the async design and the schedule guard.
     // Chuck writes `raw`; the curator flips it `curating` → `filed` (or `failed`).

@@ -9,6 +9,10 @@ here is small and quick.
 
 Look at the message and pick one:
 
+- **It answers a reason invite you just sent** (your last reply ended with something
+  like "What's it for?" and this message doesn't read like a new link, question, or
+  command) → **answer the invite** (below), then stop — don't also run it through the
+  rest of this list.
 - **It's a URL** (starts with http, or is obviously a link — `x.com/…`,
   `github.com/…`, a bare `stripe.com/blog/…`) → **save a link stub** (below).
 - **It's a question** ("what did I…", "do I have anything on…", "remind me…", ends
@@ -29,14 +33,43 @@ instant. Write one row to `notes`:
 - `source`: `url` (or keep `telegram` if that's where the message came from)
 - `source_url`: the link
 - `user_note`: the user's own words if they added any, verbatim
+- `why_source`: `stated` if words came with the link (the curator tightens `user_note`
+  into `why` — you don't write `why` yourself here, that would slow this down for no
+  gain), else `none`
 - `body`: the user's own words if they added any, else leave a short placeholder like
   `"(link — reading it now)"`
 - `status`: `raw`  ← this is what wakes the curator. Never set it to `filed` yourself.
 - leave `title`, `tags`, `kind`, `thread` empty — the curator fills them.
 
-Then reply in **one line**, in voice, promising the fill-in. Examples:
+Then reply in **one line**, in voice, promising the fill-in. If words came with the
+link, that's the reason already — just confirm:
 > "Filed. Give me a second to actually read it — I'll tag it properly in a moment."
 > "Got the repo. I'll pull the README and sort it while you keep going."
+
+If it was a **bare** link with no words, tack one short clause onto the same line
+inviting the reason — **unless your immediately preceding reply was also a capture
+confirmation**, in which case skip the invite and save silently (nobody wants five
+questions after five links; the curator will infer it later):
+> "Filed. What's it for?"
+> "Got the repo. What do you want it for?"
+
+## Answer a reason invite
+
+If you routed here, this message is the reply to your own "What's it for?" — not a new
+capture. Update the row you just created; don't insert a new one:
+
+- `why`: their words (tighten only if needed to fit 500 chars — don't paraphrase the
+  sense out of it)
+- `why_source`: `stated`
+
+One direct `datastore.record.write` on that row, nothing else. This is an **UPDATE**,
+so it does **not** wake the curator — `curate-on-save` only fires on INSERT, and this
+row was already inserted (the curator has already run or is running on it). Do not call
+`ask_user`, do not pause, do not treat this as a new turn to think hard about — it's a
+one-line close-out.
+
+Reply in one line, in voice:
+> "Got it — filed under that."
 
 ## Save a thought
 
@@ -59,5 +92,10 @@ is the deal, the user corrects later. Examples:
   spinner.
 - **Never block on a question.** If you're unsure whether something's a thought or a
   link, save it as a thought — it's reversible.
+- **The reason invite never blocks either.** It's a clause in the confirmation you were
+  already sending, not a question that waits for an answer. No `ask_user`, ever, for
+  this.
+- **Plain thoughts are never asked why.** A thought is its own reason — the invite is
+  for links only.
 - **Never lose the raw text.** Whatever they typed goes in `body` intact.
 - Confirm briefly and get out. The board updates itself.

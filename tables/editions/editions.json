@@ -1,0 +1,28 @@
+{
+  "name": "editions",
+  "primary_key_column": "id",
+  // RLS on, matching the other tables — each member sees only their own editions.
+  "enable_rls": true,
+  "columns": [
+    { "name": "week_start", "type": "DATE", "required": true },
+    { "name": "week_end", "type": "DATE", "required": true },
+    { "name": "title", "type": "TEXT", "max_length": 200 },
+
+    // Where render_edition wrote the page — /editions/<year>-W<week>.html.
+    { "name": "content_path", "type": "FILE_PATH", "max_length": 500 },
+
+    // Which of the three layouts render_edition actually used. The editor requests
+    // one; the renderer can downgrade it (brief §4b) — this records what shipped.
+    { "name": "layout", "type": "TEXT", "max_length": 20 },
+
+    { "name": "item_count", "type": "INTEGER", "default": 0 },
+    { "name": "sent_at", "type": "DATETIME" },
+
+    // drafting: editor is assembling the payload. ready: render_edition wrote the
+    // file. sent: the Telegram message went out. failed: something broke — the
+    // editor still stamps whatever it managed rather than leaving the row silent.
+    { "name": "status", "type": "ENUM", "required": true, "default": "drafting",
+      "options": ["drafting", "ready", "sent", "failed"] }
+  ],
+  "config": {}
+}

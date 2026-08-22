@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ScheduleType } from 'lemma-sdk'
 import { useCurrentUser, useLiveRecords, useCreateRecord, useRecord } from 'lemma-sdk/react'
 import {
-  LayoutGrid, MessagesSquare, SlidersHorizontal, Plus, Hash, Inbox, X,
+  LayoutGrid, MessagesSquare, SlidersHorizontal, Plus, Hash, Inbox, Newspaper, X,
 } from 'lucide-react'
 import { lemmaClient } from './lemma-client'
 import { AccessGate } from './AccessGate'
@@ -22,6 +22,7 @@ import { NoteEditor } from './NoteEditor'
 import { Chat } from './Chat'
 import { Profile } from './Profile'
 import { DeveloperStudio } from './DeveloperStudio'
+import { Editorial } from './Editorial'
 import { NewCollectionDialog } from './NewCollectionDialog'
 import { ChuckIcon, ChuckPet, ChuckSplash } from './ChuckPet'
 import './styles.css'
@@ -56,6 +57,9 @@ function Sidebar({
       </button>
       <button className={`nav-item${route === 'develop' ? ' active' : ''}`} onClick={() => onRoute('develop')}>
         <ChuckIcon size={19} /> Develop
+      </button>
+      <button className={`nav-item${route === 'editorial' ? ' active' : ''}`} onClick={() => onRoute('editorial')}>
+        <Newspaper size={16} /> Editorial
       </button>
       <button className={`nav-item profile-nav-mobile${route === 'profile' ? ' active' : ''}`} onClick={() => onRoute('profile')}>
         <SlidersHorizontal size={16} /> Settings
@@ -307,6 +311,8 @@ function App() {
           refreshDrafts={() => draftsQuery.refresh()}
           onOpenProfile={() => navigate('profile')}
         />
+      ) : route === 'editorial' ? (
+        <Editorial />
       ) : (
         <Profile
           email={user?.email || ''}

@@ -1,11 +1,12 @@
 {
   "name": "seed_file",
-  "description": "Bootstrap utility for portable pod assets: writes a text/markdown file into /playbook, /voices, or /notes. Called by scripts/bootstrap-files.sh after import; never exposed to agents.",
+  "description": "Bootstrap utility for portable pod assets: writes a text/markdown file into /playbook, /voices, /notes, or /templates (file contents don't travel in a bundle import — this is how they land). Called by scripts/bootstrap-files.sh after import and for one-off backfills; never exposed to agents.",
   "type": "API",
   "code": { "$file": "code.py" },
   "permissions": { "grants": [
-    { "resource_type": "folder", "resource_name": "/playbook", "permission_ids": ["folder.read", "folder.write"] },
-    { "resource_type": "folder", "resource_name": "/voices",   "permission_ids": ["folder.read", "folder.write"] },
-    { "resource_type": "folder", "resource_name": "/notes",    "permission_ids": ["folder.read", "folder.write"] }
+    { "resource_type": "folder", "resource_name": "/playbook",  "permission_ids": ["folder.read", "folder.write"] },
+    { "resource_type": "folder", "resource_name": "/voices",    "permission_ids": ["folder.read", "folder.write"] },
+    { "resource_type": "folder", "resource_name": "/notes",     "permission_ids": ["folder.read", "folder.write"] },
+    { "resource_type": "folder", "resource_name": "/templates", "permission_ids": ["folder.read", "folder.write"] }
   ]}
 }

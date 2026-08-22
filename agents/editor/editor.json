@@ -1,0 +1,34 @@
+{
+  "name": "editor",
+  "description": "Background weekly-edition worker. Woken by the weekly-edition schedule every Sunday: pulls the last 7 days of filed notes, picks a hero/rail/sections/opinion, emits the render_edition JSON payload (never HTML — see brief N3), inserts the editions row, and sends one notification with the link. Never chats.",
+  "instruction": { "$file": "instruction.md" },
+  // MESSAGING, not USER_INTERACTION (that's chuck's — a live conversation to
+  // reply in). The editor runs on a clock with no conversation open; MESSAGING
+  // is what lets it proactively reach the user (brief §4h delivery).
+  "toolsets": ["POD", "MESSAGING"],
+  "visibility": "POD",
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "edition_id": { "type": "string", "description": "the editions row that was created" },
+      "status":     { "type": "string", "enum": ["sent", "failed"] },
+      "layout_used": { "type": "string" },
+      "item_count":  { "type": "integer" }
+    },
+    "required": ["status"]
+  },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "notes",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "collections",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "editions",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "folder", "resource_name": "/playbook",
+      "permission_ids": ["folder.read"] },
+    { "resource_type": "folder", "resource_name": "/editions",
+      "permission_ids": ["folder.read"] },
+    { "resource_type": "function", "resource_name": "render_edition",
+      "permission_ids": ["function.read", "function.execute"] }
+  ]}
+}

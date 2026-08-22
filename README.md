@@ -10,7 +10,8 @@
 
 <p align="center">
   Throw Chuck a thought, link, repo, or half-formed idea.<br />
-  It lands now, organises itself in the background, and comes back when you ask.
+  It lands now, organises itself in the background, and comes back when you ask —
+  <br />and every Sunday, without asking, as a paper worth actually reading.
 </p>
 
 <p align="center">
@@ -98,6 +99,10 @@ Chuck separates capture from organisation.
 3. **Ask your memory.** Chuck answers from what you actually kept and points back to it.
 4. **Develop deliberately.** Turn a fragment into an email, plan, essay, script, or
    another useful draft without overwriting the source.
+5. **Read weekly, unprompted.** Every Sunday, an Editor agent lays out what you saved
+   that week as *Forgetful Times* — a real front page with a hero story, a rail of
+   pulled highlights, sections by collection, and one closing thought. Headlines are
+   real hyperlinks. You tap through and read the actual thing.
 
 ## One memory, several ways back in
 
@@ -124,6 +129,19 @@ Chuck separates capture from organisation.
       <img src="./docs/screenshots/04-personalisation.jpg" alt="Chuck personalisation" />
       <br /><strong>Make it sound and file like you</strong><br />
       Tune tone, tags, filing confidence, styles, references, and collection rules.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="./docs/screenshots/05-forgetful-times.jpg" alt="Forgetful Times weekly edition" />
+      <br /><strong>Forgetful Times, every Sunday</strong><br />
+      A real front page rendered from that week's notes — hero, rail, sections,
+      opinion — with headlines that are real hyperlinks, not a screenshot of one.
+    </td>
+    <td width="50%" valign="top">
+      <br /><strong>Read it in the app, too</strong><br />
+      The Editorial tab lists every past edition and renders the one you pick —
+      the newspaper keeps its own typography inside the app's own UI.
     </td>
   </tr>
 </table>
@@ -196,6 +214,14 @@ New pod members receive their own personal curator schedule when they first open
 app. Add working members with the `USER` role or higher; a read-only `VIEWER` cannot
 save thoughts or create automation.
 
+The weekly edition doesn't get that same per-member treatment yet: `weekly-edition`
+is a single schedule imported with the bundle, owned by whoever ran the import, and
+the Editor reads across the pod rather than per-caller RLS. Fine for the single-owner
+pod this ships as; a fork going multi-member should give each member their own
+edition schedule the same way `curate-on-save` already does. `/editions` itself is
+folder-level permissions, not row-level RLS — anyone with folder access sees every
+edition, not just their own week.
+
 ## How Chuck works
 
 ```text
@@ -217,18 +243,32 @@ you save a thought or link
        ┌────┴─────────┐
        ▼              ▼
  ask Chuck      develop a separate draft
+
+ ── every Sunday, on a clock, independent of the above ──
+
+  weekly-edition schedule (TIME)
+            │
+            ▼
+      Editor Agent ── pulls the last 7 days of filed notes
+            │        ── scores and picks a hero, a rail, sections, one opinion
+            │        ── emits JSON only, never HTML
+            ▼
+      render_edition ── deterministic function: validates, escapes, downgrades
+            │            the layout if the data can't support what was asked
+            ▼
+   /editions/<year>-W<week>.html ──▶ one notification, a real link, not an image
 ```
 
 This repository is the complete Lemma pod, not merely an app screenshot or prompt:
 
 | Layer | What ships |
 | --- | --- |
-| App | Mind Palace, chat, note editor, collections, settings, and Development workspace |
-| Agents | `chuck` for capture/recall, `curator` for background filing, `developer` for deliberate transformation |
-| Tables | Private notes, collections, preferences, and drafts |
-| Functions | A safe public URL reader and a portable file-bootstrap utility |
-| Automation | An INSERT-only personal schedule that wakes the curator without trigger loops |
-| Files | Public playbooks and style templates, plus private runtime paths for each member |
+| App | Mind Palace, chat, note editor, collections, settings, Development workspace, and an Editorial tab that renders past editions |
+| Agents | `chuck` for capture/recall, `curator` for background filing, `developer` for deliberate transformation, `editor` for the weekly edition |
+| Tables | Private notes, collections, preferences, drafts, and editions |
+| Functions | A safe public URL reader, a portable file-bootstrap utility, and a deterministic HTML renderer for the weekly edition |
+| Automation | An INSERT-only personal schedule that wakes the curator without trigger loops, plus a weekly TIME schedule that wakes the editor |
+| Files | Public playbooks, style templates, and the edition template, plus private runtime paths for each member |
 
 The important design choice is simple: **capture stays fast because filing happens
 afterward.** The note itself is durable state; the agents are replaceable workers
@@ -247,6 +287,10 @@ Useful places to start:
 - `agents/chuck/instruction.md` — capture and recall behaviour.
 - `agents/curator/instruction.md` — background filing behaviour.
 - `agents/developer/instruction.md` — transformation and source-safety rules.
+- `agents/editor/instruction.md` and `files/playbook/edit-edition.md` — weekly
+  edition selection rules (hero scoring, dek rules, what gets skipped).
+- `files/templates/forgetful-times.html` — the edition's design. The agent never
+  touches this; `functions/render_edition` is the only thing that renders it.
 - `files/playbook/` — procedures the agents load on demand.
 - `files/voices/` — reusable writing styles.
 - `apps/chuck-app/source/` — the complete React app.
